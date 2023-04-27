@@ -17,14 +17,18 @@ RUN \
     netcat-openbsd \
     sudo && \
   echo "**** install openssh-server ****" && \
-  if [ -z ${OPENSSH_RELEASE+x} ]; then \
+#  if [ -z ${OPENSSH_RELEASE+x} ]; then \
+  if [ -z $(sh -c 'echo ${OPENSSH_RELEASE+x}') ]; then \
     OPENSSH_RELEASE=$(curl -sL "http://dl-cdn.alpinelinux.org/alpine/v3.17/main/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp && \
     awk '/^P:openssh-server-pam$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
   fi && \
-  apk add --no-cache \
-    openssh-client==${OPENSSH_RELEASE} \
-    openssh-server-pam==${OPENSSH_RELEASE} \
-    openssh-sftp-server==${OPENSSH_RELEASE} && \
+  apk add --no-cache \ 
+    openssh-client==$(sh -c 'echo ${OPENSSH_RELEASE}') } \
+    openssh-server-pam==$(sh -c 'echo ${OPENSSH_RELEASE}')  \
+    openssh-sftp-server==$(sh -c 'echo ${OPENSSH_RELEASE}')  && \
+#    openssh-client==${OPENSSH_RELEASE} \
+#    openssh-server-pam==${OPENSSH_RELEASE} \
+#    openssh-sftp-server==${OPENSSH_RELEASE} && \
   echo "**** setup openssh environment ****" && \
   sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config && \
   usermod --shell /bin/bash abc && \
