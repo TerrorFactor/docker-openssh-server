@@ -23,7 +23,7 @@ RUN \
     awk '/^P:openssh-server-pam$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
   fi && \
   apk add --no-cache \ 
-    openssh-client==$(sh -c 'echo ${OPENSSH_RELEASE}') } \
+    openssh-client==$(sh -c 'echo ${OPENSSH_RELEASE}') \
     openssh-server-pam==$(sh -c 'echo ${OPENSSH_RELEASE}')  \
     openssh-sftp-server==$(sh -c 'echo ${OPENSSH_RELEASE}')  && \
 #    openssh-client==${OPENSSH_RELEASE} \
